@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Translate(playerMov, Space.Self);
 
-
+        Debug.Log(isGrounded);
 
         if (Input.GetButton("Jump") && isGrounded)
         {

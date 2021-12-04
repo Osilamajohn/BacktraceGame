@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e908b13f7467f4185f3f45d43568c4, type: 3}
   m_Name: Backtrace Configuration
   m_EditorClassIdentifier: 
-  ServerUrl: https://submit.backtrace.io/aigamejam/291c4b3709b3237cf507d4b6ae31d97a4e03ffa561fad10bca7d928dbf612ba2/jso
+  ServerUrl: https://submit.backtrace.io/aigamejam/291c4b3709b3237cf507d4b6ae31d97a4e03ffa561fad10bca7d928dbf612ba2/json
   Token: 
   ReportPerMin: 50
   DisableInEditor: 0
