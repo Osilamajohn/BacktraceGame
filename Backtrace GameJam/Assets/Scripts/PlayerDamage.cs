@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerDamage : MonoBehaviour
 {
     Animator animator;
-    public float waitingTime = 4f;
+    public float waitingTime = 1f;
     float timePassed;
     Transform patata;
+
+    int attackCount = 0;
+    bool canAttack = true;
 
     void Start()
     {
@@ -19,19 +22,34 @@ public class PlayerDamage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        animator.SetBool("canAttack", false);
 
-        if (Input.GetMouseButtonDown(0) && timePassed >= waitingTime)
+        if (attackCount >= 3)
         {
-            animator.SetTrigger("punch1");
-            timePassed = 0;
-            
+            attackCount = 0;
+        }
+
+
+        if (Input.GetMouseButtonDown(0) && canAttack)
+        {
+            attackCount += 1;
+            animator.SetInteger("attackCount", attackCount);
+            animator.SetBool("canAttack", true);
+            canAttack = false;
+
+            StartCoroutine(EnableAttacking());
+
         }
 
 
 
-        timePassed += Time.deltaTime;
 
+    }
 
-
+    IEnumerator EnableAttacking()
+    {
+        yield return new WaitForSeconds(waitingTime);
+        canAttack = true;
+        
     }
 }
