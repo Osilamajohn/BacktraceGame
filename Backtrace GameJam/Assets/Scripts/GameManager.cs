@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     public int health;
     public int maxHealth = 100;
+    public int collected = 0;
     // Start is called before the first frame update
     private void Awake()
     {
