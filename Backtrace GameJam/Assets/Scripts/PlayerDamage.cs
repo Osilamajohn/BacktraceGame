@@ -15,6 +15,7 @@ public class PlayerDamage : MonoBehaviour
     bool canAttack = true;
     playerHit playerHit;
     public int playerDamage = 10;
+    public AudioSource punch;
 
     void Start()
     {
@@ -38,6 +39,7 @@ public class PlayerDamage : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canAttack)
         {
             attackCount += 1;
+            punch.Play();
             animator.SetInteger("attackCount", attackCount);
             animator.SetBool("canAttack", true);
             canAttack = false;

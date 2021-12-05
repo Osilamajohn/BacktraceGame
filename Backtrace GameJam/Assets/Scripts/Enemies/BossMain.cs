@@ -74,6 +74,13 @@ public class BossMain : MonoBehaviour
             animator.SetTrigger("attack");
             attack = false;
 
+            if(Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) < attackRange)
+            {
+                GameManager.instance.health -= 25;
+            }
+
+
+
             StartCoroutine(returningTime());
 
           

@@ -14,6 +14,11 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeed;
     public float seconds;
 
+    bool onceRun = false;
+    bool oncePlay = false;
+
+    public AudioSource run, walk, jump;
+
     Animator animator;
     Rigidbody rigidBody;
     // Start is called before the first frame update
@@ -41,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButton("Jump") && isGrounded)
         {
             rigidBody.velocity = new Vector3(0, jumpSpeed, 0);
+            jump.Play();
             animator.SetTrigger("jump");
             StartCoroutine(jumpTime());
         }
@@ -50,9 +56,17 @@ public class PlayerMovement : MonoBehaviour
         if(playerMov.magnitude == 0)
         {
             animator.SetBool("walking", false);
+            walk.Stop();
+            oncePlay = false;
         } else
         {
             animator.SetBool("walking", true);
+            if (!oncePlay)
+            {
+                walk.Play();
+                oncePlay = true;
+            }
+            
            
         }
 
@@ -62,15 +76,28 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("runing", false);
             speed = 5;
+            onceRun = false;
+            run.Stop();
         } else if (playerMov.magnitude != 0 && Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("runing", true);
             animator.SetBool("walking", false);
             speed = 10;
+            walk.Stop();
+            oncePlay = false;
+            
+            if (!onceRun)
+            {
+                run.Play();
+                onceRun = true;
+            }
+            
         } else
         {
             speed = 5;
             animator.SetBool("runing", false);
+            run.Stop();
+            onceRun = false;
         }
 
 

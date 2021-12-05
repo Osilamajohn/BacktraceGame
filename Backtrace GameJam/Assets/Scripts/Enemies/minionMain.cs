@@ -21,6 +21,7 @@ public class minionMain : MonoBehaviour
     NavMeshAgent navMeshAgent;
     bool once = false;
     bool returning = false;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class minionMain : MonoBehaviour
         animator = GetComponent<Animator>();
         originalPos = transform;
         timePassed = Mathf.Infinity;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -58,6 +60,7 @@ public class minionMain : MonoBehaviour
                 timePassed = 0;
                 animator.SetTrigger("attack");
                 GameManager.instance.health -= damage;
+                audioSource.Play();
             }
 
 
