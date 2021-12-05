@@ -19,7 +19,7 @@ public class minionMain : MonoBehaviour
     Animator animator;
 
     NavMeshAgent navMeshAgent;
-
+    bool once = false;
     bool returning = false;
 
     // Start is called before the first frame update
@@ -37,33 +37,51 @@ public class minionMain : MonoBehaviour
 
         transform.LookAt(player.transform);
 
-        if (Vector3.Distance(transform.position, player.transform.position) <= persueDistance)
+
+        if (EnemyHealth > 0)
         {
-            navMeshAgent.destination = player.transform.position + new Vector3(-2, 0 - 2);
-            animator.SetBool("walking", true);
+
+            if (Vector3.Distance(transform.position, player.transform.position) <= persueDistance)
+            {
+                navMeshAgent.destination = player.transform.position + new Vector3(-2, 0 - 2);
+                animator.SetBool("walking", true);
+            }
+            else
+            {
+                navMeshAgent.destination = originalPos.position;
+                animator.SetBool("walking", false);
+            }
+
+
+            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance && timePassed >= waitingTime)
+            {
+                timePassed = 0;
+                animator.SetTrigger("attack");
+                GameManager.instance.health -= damage;
+            }
+
+
+            timePassed += Time.deltaTime;
+
         }
-        else
+
+        if(EnemyHealth <= 0 && !once)
         {
-            navMeshAgent.destination = originalPos.position;
-            animator.SetBool("walking", false);
+            once = true;
+            animator.SetTrigger("died");
+            StartCoroutine(deleteEnemy());
         }
-
-
-        if(Vector3.Distance(transform.position, player.transform.position) <= attackDistance && timePassed >= waitingTime)
-        {
-            timePassed = 0;
-            animator.SetTrigger("attack");
-            GameManager.instance.health -= damage;
-        }
-
-
-        timePassed += Time.deltaTime;
-
-
-
-
            
         }
+
+
+    IEnumerator deleteEnemy()
+    {
+        yield return new WaitForSeconds(3.5f);
+        GameObject.Find("hit").GetComponent<playerHit>().enemyInSight = null;
+        Destroy(gameObject);
+
+    }
 
 
     }

@@ -8,15 +8,20 @@ public class PlayerDamage : MonoBehaviour
     public float waitingTime = 1f;
     float timePassed;
     Transform patata;
+    public Transform collisionPoint;
+    public float radius = 1;
 
     int attackCount = 0;
     bool canAttack = true;
+    playerHit playerHit;
+    public int playerDamage = 10;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         timePassed = Mathf.Infinity;
-      
+
+        playerHit = GameObject.Find("hit").GetComponent<playerHit>();
     }
 
     // Update is called once per frame
@@ -37,10 +42,19 @@ public class PlayerDamage : MonoBehaviour
             animator.SetBool("canAttack", true);
             canAttack = false;
 
+
+            if(playerHit.enemyInSight != null)
+            {
+                playerHit.enemyInSight.GetComponent<minionMain>().EnemyHealth -= playerDamage;
+            }
+
             StartCoroutine(EnableAttacking());
 
         }
 
+
+
+        Debug.Log(playerHit.enemyInSight.name);
 
 
 

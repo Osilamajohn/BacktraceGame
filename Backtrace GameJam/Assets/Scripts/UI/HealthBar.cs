@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
 {
 
     Slider slider;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class HealthBar : MonoBehaviour
 
         if(GameManager.instance.health <= 0)
         {
+            GameManager.instance.lastScene = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(3);
         }
 
