@@ -10,7 +10,7 @@ public class playerHit : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "enemy")
+        if (other.gameObject.tag == "enemy")
         {
             Debug.Log("lol");
             enemyInSight = other.gameObject;
