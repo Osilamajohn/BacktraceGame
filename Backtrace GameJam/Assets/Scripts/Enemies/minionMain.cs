@@ -12,6 +12,9 @@ public class minionMain : MonoBehaviour
 
     float timePassed;
     public float waitingTime = 2;
+    public int damage = 10;
+
+    public int EnemyHealth = 20;
 
     Animator animator;
 
@@ -50,6 +53,7 @@ public class minionMain : MonoBehaviour
         {
             timePassed = 0;
             animator.SetTrigger("attack");
+            GameManager.instance.health -= damage;
         }
 
 
