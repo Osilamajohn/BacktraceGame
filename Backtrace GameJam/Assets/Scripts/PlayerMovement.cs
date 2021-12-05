@@ -9,14 +9,18 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     public float radius;
     public LayerMask groundMask;
+
     public float speed;
     public float jumpSpeed;
     public float seconds;
+
     Animator animator;
+    Rigidbody rigidBody;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -36,8 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButton("Jump") && isGrounded)
         {
-            GetComponent<Rigidbody>().useGravity = false;
-            transform.Translate(new Vector3(0f, jumpSpeed * Time.deltaTime, 0f), Space.Self);
+            rigidBody.velocity = new Vector3(0, jumpSpeed, 0);
             animator.SetTrigger("jump");
             StartCoroutine(jumpTime());
         }
@@ -63,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("runing", true);
             animator.SetBool("walking", false);
-            speed = 15;
+            speed = 10;
         } else
         {
             speed = 5;
