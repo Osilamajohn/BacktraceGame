@@ -24,6 +24,8 @@ public class BossMain : MonoBehaviour
     bool courrutineOnce = false;
     bool offReturnOnce = false;
 
+    public int bossHealth = 300;
+
     NavMeshAgent navMeshAgent;
     // Start is called before the first frame update
     void Start()

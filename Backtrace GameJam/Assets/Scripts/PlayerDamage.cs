@@ -16,6 +16,18 @@ public class PlayerDamage : MonoBehaviour
     playerHit playerHit;
     public int playerDamage = 10;
     public AudioSource punch;
+    public AudioSource specialSound;
+
+    public GameObject special;
+
+    GameObject[] enemies;
+
+    public float specialRange = 6f;
+
+
+
+    public float specialCooldown = 8f;
+    float specialPassed;
 
     void Start()
     {
@@ -23,11 +35,16 @@ public class PlayerDamage : MonoBehaviour
         timePassed = Mathf.Infinity;
 
         playerHit = GameObject.Find("hit").GetComponent<playerHit>();
+        specialPassed = Mathf.Infinity;
+        special.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
+
         animator.SetBool("canAttack", false);
 
         if (attackCount >= 3)
@@ -47,7 +64,14 @@ public class PlayerDamage : MonoBehaviour
 
             if(playerHit.enemyInSight != null)
             {
-                playerHit.enemyInSight.GetComponent<minionMain>().EnemyHealth -= playerDamage;
+                if(playerHit.enemyInSight.name != "MainBossWithAnimations")
+                {
+                    playerHit.enemyInSight.GetComponent<minionMain>().EnemyHealth -= playerDamage;
+                } else
+                {
+                    playerHit.enemyInSight.GetComponent<BossMain>().bossHealth -= playerDamage;
+                }
+                
             }
 
             StartCoroutine(EnableAttacking());
@@ -56,7 +80,39 @@ public class PlayerDamage : MonoBehaviour
 
 
 
-        Debug.Log(playerHit.enemyInSight.name);
+        if(Input.GetMouseButtonDown(1) && specialPassed >= specialCooldown)
+        {
+            special.SetActive(true);
+            specialSound.Play();
+            StartCoroutine(specialTiming());
+            specialPassed = 0;
+            animator.SetTrigger("special");
+
+            foreach(GameObject enemy in enemies)
+            {
+                if(Vector3.Distance(transform.position, enemy.transform.position) < specialRange)
+                {
+                    if(enemy.GetComponent<minionMain>() != null)
+                    {
+                        if (playerHit.enemyInSight.name != "MainBossWithAnimations")
+                        {
+                            enemy.GetComponent<minionMain>().EnemyHealth -= 30;
+                        } else
+                        {
+                            enemy.GetComponent<BossMain>().bossHealth -= 30;
+                        }
+                            
+                    }
+                    
+                }
+            }
+
+
+        }
+
+        specialPassed += Time.deltaTime;
+
+        
 
 
 
@@ -68,4 +124,12 @@ public class PlayerDamage : MonoBehaviour
         canAttack = true;
         
     }
+
+    IEnumerator specialTiming()
+    {
+        yield return new WaitForSeconds(5);
+        special.SetActive(false);
+    }
+
+
 }
